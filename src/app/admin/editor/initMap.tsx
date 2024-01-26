@@ -2,9 +2,9 @@
 
 import { useEffect } from "react"
 
-export function KakaoMap(props: {}) {
+export function KakaoMap(props: {api : String}) {
     useEffect( ()=> {
-        const KEY = "7e762a89d43d0768cf57b7867f72b37b"
+        const KEY = props.api;
         const URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${ KEY }&autoload=false`
         
         const prevAPI = document.querySelector("#apiKey") as HTMLScriptElement
