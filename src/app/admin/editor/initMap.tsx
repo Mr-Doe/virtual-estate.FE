@@ -2,9 +2,12 @@
 
 import { useEffect } from "react"
 
-export function KakaoMap(props: {api : String}) {
+// @ts-ignore
+export default function KakaoMap(props) {
     useEffect( ()=> {
-        const KEY = props.api;
+        console.log(props)
+        // const KEY = props.mapData.api;
+        const KEY = ""
         const URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${ KEY }&autoload=false`
         
         const prevAPI = document.querySelector("#apiKey") as HTMLScriptElement
@@ -21,10 +24,10 @@ export function KakaoMap(props: {api : String}) {
             // @ts-ignore
             window.kakao.maps.load( ()=> {
                 // @ts-ignore
-                new window.kakao.maps.Map(document.querySelector("div"), {
+                props.mapData.map = new window.kakao.maps.Map(document.querySelector("div"), {
                     // @ts-ignore
-                    center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-                    level: 3
+                    center: new window.kakao.maps.LatLng(37.551891, 126.991793),
+                    level: 7
                 })
             })
         })
