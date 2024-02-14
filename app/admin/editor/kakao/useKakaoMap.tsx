@@ -1,16 +1,15 @@
 "use client"
 import { useEffect } from "react"
 
-export default function InitMap(props: { mapData: { sign: string, apiKey: string}, onMap: Function }) {
+export default function InitMap(props: { mapInfo: { sign:string, apiKey:string } | null, setMap:Function } ) {
     let map: {}
     useEffect( ()=> {
-        if ( props.mapData ) {
+        if ( props.mapInfo ) {
             const scrip = document.createElement("script")
-            scrip.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${ props.mapData.apiKey }&autoload=false`
-            // scrip.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=7e762a89d43d0768cf57b7867f72b37b&autoload=false`
-            scrip.id = props.mapData.sign
+            scrip.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${ props.mapInfo.apiKey }&autoload=false`
+            scrip.id = props.mapInfo.sign
             
-            if (!document.querySelector(`#${props.mapData.sign}`)) {
+            if (!document.querySelector(`#${props.mapInfo.sign}`)) {
                 document.head.appendChild(scrip)
     
                 scrip.onload = ()=> {
@@ -26,15 +25,17 @@ export default function InitMap(props: { mapData: { sign: string, apiKey: string
                             disableDoubleClick: true,
                         })
     
-                        // @ts-ignore
-                        delete window.kakao
-                        document.querySelector(`#${props.mapData.sign}`)?.remove()
-                        props.onMap(map)
+                        if (props.mapInfo) {
+                            // @ts-ignore
+                            delete window.kakao
+                            document.querySelector(`#${props.mapInfo.sign}`)?.remove()
+                            props.setMap(map)
+                        }
                     })
                 }
             }
         }
-    }, [props])
+    }, [props.mapInfo])
 
-    return <div id="map" style={{ width: "100vw", height: "100vh" }} />
+    return <div className="absolute" id="map" style={{ width: "100vw", height: "100vh" }} />
 }
