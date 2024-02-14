@@ -1,9 +1,14 @@
 "use client"
 import { useState, useEffect } from "react"
-import InitMap from "./useKakaoMap"
+import MapLoader from "./useKakaoMap"
+import { ploygon } from "./mapPolygon"
 
-export default function MapControl(props: { mapData: { map: Object | null, setMap: Function }}) {
-    // console.log(props)
+interface ctrProps {
+    map: Object | null
+    updateMap: Function
+}
+
+export default function MapController(props: ctrProps ) {
     const [ mapInfo, setMapInfo ] = useState<{ sign: string, apiKey: string } | null>(null)
     useEffect( ()=> {
         ( async ()=> {
@@ -12,5 +17,7 @@ export default function MapControl(props: { mapData: { map: Object | null, setMa
         })()
     }, [])
 
-    return <InitMap mapInfo={ mapInfo } setMap={ props.mapData.setMap } />
+    ploygon(props.map)
+
+    return <MapLoader { ...{updateMap: props.updateMap, mapInfo: mapInfo}} />
 }

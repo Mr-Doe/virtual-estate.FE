@@ -1,7 +1,16 @@
 "use client"
 import { useEffect } from "react"
 
-export default function InitMap(props: { mapInfo: { sign:string, apiKey:string } | null, setMap:Function } ) {
+interface MapProps {
+    updateMap : Function
+    updatePolygon: Function
+    mapInfo: null | {
+        sign: string
+        apiKey: string
+    }
+}
+
+export default function MapLoader(props: MapProps) {
     let map: {}
     useEffect( ()=> {
         if ( props.mapInfo ) {
@@ -28,8 +37,9 @@ export default function InitMap(props: { mapInfo: { sign:string, apiKey:string }
                         if (props.mapInfo) {
                             // @ts-ignore
                             delete window.kakao
+                            props.updateMap(map)
+                            props.updatePolygon(new window.kakao.maps.Polygon)
                             document.querySelector(`#${props.mapInfo.sign}`)?.remove()
-                            props.setMap(map)
                         }
                     })
                 }

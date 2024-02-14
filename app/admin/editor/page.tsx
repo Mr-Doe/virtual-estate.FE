@@ -5,7 +5,7 @@ import SideNavigator from "./sideNavigator"
 
 const DynamicComponent = dynamic(
     ()=> {
-        return import("./kakao/mapControl") as Promise<any>
+        return import("./kakao/mapController") as Promise<{ default: React.ComponentType<any> }>
     }, { ssr: false }
 )
 
@@ -14,22 +14,10 @@ export default function DynamicMap() {
     const updateMap = (newMap: Record<string, Object>)=> {
         setMap(newMap)
     }
-
-    useEffect(
-        ()=> {
-
-        }, []
-    )
-    
-    const mapData: { map: Object | null, setMap: Function } = {
-        map: map,
-        setMap: updateMap
-    }
     
     return (
         <div>
-            {/* @ts-ignore */}
-            <DynamicComponent mapData={ mapData } />
+            <DynamicComponent { ...{ map: map, updateMap: updateMap } } />
             <SideNavigator />
         </div>
     )
