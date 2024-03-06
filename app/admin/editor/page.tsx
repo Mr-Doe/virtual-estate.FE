@@ -12,12 +12,18 @@ const DynamicComponent = dynamic(
 export default function DynamicMap() {
     const [ map, setMap ] = useState<Object | null>(null)
     const updateMap = (newMap: Record<string, Object>)=> {
-        setMap(newMap)
+        if ( map !== newMap ) {
+            setMap(newMap)
+        }
+    }
+    const [ polygonData, setPolygonData ] = useState<Object | null>(null)
+    const updatePolygon = (newData: Record<string, Object>)=> {
+        setPolygonData(newData)
     }
     
     return (
         <div>
-            <DynamicComponent { ...{ map: map, updateMap: updateMap } } />
+            <DynamicComponent { ...{map: map, updateMap: updateMap } } />
             <SideNavigator />
         </div>
     )

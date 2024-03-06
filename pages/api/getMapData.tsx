@@ -1,11 +1,14 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handiler(req: NextApiRequest, res: NextApiResponse) {
-    const url = req.url as string
-    const queryString = url.substring(url.lastIndexOf("/")+1) // 마지막 "/"를 포함하지 않는 문자열
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    const queryString : Partial<{ [key: string]: string | string[] }> = req.query
 
-    const getData = await fetch(`${ process.env.SERVER_IP }/admin/map/dist-1`)
-    const resutlData = await getData.json()
-
-    res.status(200).json(resutlData)
+    if ( queryString.hasOwnProperty("c") ) {
+        const getData = await fetch(`${ process.env.SERVER_IP }/admin/map/dist-${ queryString.c }`, {cache : "no-store"})
+        const resutlData = await getData.json()
+    
+        res.status(200).json(resutlData)
+        return
+    }
+    res.status(200)
 }
